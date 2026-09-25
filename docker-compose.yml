@@ -1,0 +1,89 @@
+  services:
+    postgres:
+      image: postgis/postgis:17-3.5
+      container_name: uber-postgres
+      restart: unless-stopped
+      environment:
+        POSTGRES_DB: uber
+        POSTGRES_USER: uber
+        POSTGRES_PASSWORD: uber
+      ports:
+        - "5432:5432"
+      volumes:
+        - postgres_data:/var/lib/postgresql/data
+      healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U uber -d uber"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+    redis:
+      image: redis:8-alpine
+      container_name: uber-redis
+      restart: unless-stopped
+      command: redis-server --appendonly yes
+      ports:
+        - "6379:6379"
+      volumes:
+        - redis_data:/data
+      healthcheck:
+        test: ["CMD", "redis-cli", "ping"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+    zookeeper:
+      image: confluentinc/cp-zookeeper:7.9.5
+      container_name: uber-zookeeper
+      restart: unless-stopped
+      environment:
+        ZOOKEEPER_CLIENT_PORT: 2181
+        ZOOKEEPER_TICK_TIME: 2000
+      ports:
+        - "2181:2181"
+      volumes:
+        - zookeeper_data:/var/lib/zookeeper/data
+        - zookeeper_logs:/var/lib/zookeeper/log
+    kafka:
+      image: confluentinc/cp-kafka:7.9.5
+      container_name: uber-kafka
+      restart: unless-stopped
+      depends_on:
+        - zookeeper
+      ports:
+        - "9092:9092"
+        - "29092:29092"
+      environment:
+        KAFKA_BROKER_ID: 1
+        # ZooKeeper
+        KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+
+        # Two listeners:
+        # 9092  -> host machine
+        # 29092 -> other Docker containers
+        KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+
+        KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:29092,EXTERNAL://localhost:9092
+
+        KAFKA_LISTENERS: INTERNAL://0.0.0.0:29092,EXTERNAL://0.0.0.0:9092
+
+        KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+
+        # Development configuration
+        KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+        KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+        KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+
+        KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+
+        KAFKA_NUM_PARTITIONS: 3
+
+        KAFKA_LOG_RETENTION_HOURS: 168
+      volumes:
+        - kafka_data:/var/lib/kafka/data
+  volumes:
+    postgres_data:
+    redis_data:
+    zookeeper_data:
+    zookeeper_logs:
+    kafka_data:
+
+  
