@@ -52,8 +52,8 @@ public class RideService {
         Ride savedRide = rideRepository.save(ride);
 
         RideRequestedEvent event = new RideRequestedEvent(
+                savedRide.getRiderId(),
                 savedRide.getId(),
-                savedRide.getDriverId(),
                 savedRide.getPickupLatitude(),
                 savedRide.getPickupLongitude(),
                 savedRide.getPickUpAddress(),

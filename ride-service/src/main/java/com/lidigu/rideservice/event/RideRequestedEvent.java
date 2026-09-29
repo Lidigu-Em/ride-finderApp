@@ -3,7 +3,7 @@ package com.lidigu.rideservice.event;
 public record RideRequestedEvent(
 
         String riderId,
-        String driverId,
+        String rideId,
         double pickupLatitude,
         double pickupLongitude,
         String pickUpAddress,

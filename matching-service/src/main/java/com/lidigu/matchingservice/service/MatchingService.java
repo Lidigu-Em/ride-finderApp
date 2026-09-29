@@ -45,7 +45,7 @@ public class MatchingService {
 
         RideMatchedEvent matchedEvent = new RideMatchedEvent(
                 event.rideId(),
-                event.rideId(),
+                event.riderId(),
                 assignedDriver.driverId(),
                 assignedDriver.latitude(),
                 assignedDriver.longitude(),
