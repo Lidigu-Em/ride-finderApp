@@ -1,0 +1,354 @@
+{
+	"info": {
+		"_postman_id": "9b152d0a-14d8-4b78-9e5b-f726715f3a01",
+		"name": "Uber App Microservices",
+		"description": "Comprehensive Postman collection for all microservices in the uber-app backend (Ride Service, Location Service, and Matching Service).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Ride Service",
+			"description": "Endpoints handled by Ride Service running on port 8083",
+			"item": [
+				{
+					"name": "Actuator Health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ride_service_url}}/actuator/health",
+							"host": [
+								"{{ride_service_url}}"
+							],
+							"path": [
+								"actuator",
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Request a Ride",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"riderId\": \"rider-123\",\n  \"pickupLatitude\": -1.286389,\n  \"pickupLongitude\": 36.817223,\n  \"pickUpAddress\": \"Nairobi CBD, Kenyatta Avenue\",\n  \"dropLatitude\": -1.319167,\n  \"dropLongitude\": 36.828611,\n  \"dropAddress\": \"South C, Muhoho Avenue\"\n}"
+						},
+						"url": {
+							"raw": "{{ride_service_url}}/api/v1/rides/request",
+							"host": [
+								"{{ride_service_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"rides",
+								"request"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Ride by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ride_service_url}}/api/v1/rides/{{rideId}}",
+							"host": [
+								"{{ride_service_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"rides",
+								"{{rideId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Rides by Rider ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ride_service_url}}/api/v1/rides/rider/{{riderId}}",
+							"host": [
+								"{{ride_service_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"rides",
+								"rider",
+								"{{riderId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Start Ride",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{ride_service_url}}/api/v1/rides/{{rideId}}/start",
+							"host": [
+								"{{ride_service_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"rides",
+								"{{rideId}}",
+								"start"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Complete Ride",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{ride_service_url}}/api/v1/rides/{{rideId}}/complete",
+							"host": [
+								"{{ride_service_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"rides",
+								"{{rideId}}",
+								"complete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel Ride",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{ride_service_url}}/api/v1/rides/{{rideId}}/cancel",
+							"host": [
+								"{{ride_service_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"rides",
+								"{{rideId}}",
+								"cancel"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Location Service",
+			"description": "Endpoints handled by Location Service running on port 8082",
+			"item": [
+				{
+					"name": "Actuator Health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{location_service_url}}/actuator/health",
+							"host": [
+								"{{location_service_url}}"
+							],
+							"path": [
+								"actuator",
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Driver Location",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"driverId\": \"driver-001\",\n  \"latitude\": -1.286389,\n  \"longitude\": 36.817223\n}"
+						},
+						"url": {
+							"raw": "{{location_service_url}}/api/v1/locations/drivers/update",
+							"host": [
+								"{{location_service_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"locations",
+								"drivers",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Nearby Drivers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{location_service_url}}/api/v1/locations/drivers/nearby?latitude=-1.286389&longitude=36.817223&radiusInKm=5.0",
+							"host": [
+								"{{location_service_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"locations",
+								"drivers",
+								"nearby"
+							],
+							"query": [
+								{
+									"key": "latitude",
+									"value": "-1.286389",
+									"description": "Pickup or search latitude"
+								},
+								{
+									"key": "longitude",
+									"value": "36.817223",
+									"description": "Pickup or search longitude"
+								},
+								{
+									"key": "radiusInKm",
+									"value": "5.0",
+									"description": "Search radius in kilometers (default: 5.0)"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Driver Location",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{location_service_url}}/api/v1/locations/drivers/{{driverId}}",
+							"host": [
+								"{{location_service_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"locations",
+								"drivers",
+								"{{driverId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Matching Service",
+			"description": "Endpoints & Health for Matching Service running on port 8084 (Event-driven via Kafka consumer & Feign Client to location-service)",
+			"item": [
+				{
+					"name": "Actuator Health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{matching_service_url}}/actuator/health",
+							"host": [
+								"{{matching_service_url}}"
+							],
+							"path": [
+								"actuator",
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actuator Info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{matching_service_url}}/actuator/info",
+							"host": [
+								"{{matching_service_url}}"
+							],
+							"path": [
+								"actuator",
+								"info"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "ride_service_url",
+			"value": "http://localhost:8083",
+			"type": "string"
+		},
+		{
+			"key": "location_service_url",
+			"value": "http://localhost:8082",
+			"type": "string"
+		},
+		{
+			"key": "matching_service_url",
+			"value": "http://localhost:8084",
+			"type": "string"
+		},
+		{
+			"key": "rideId",
+			"value": "replace-with-actual-ride-id",
+			"type": "string"
+		},
+		{
+			"key": "riderId",
+			"value": "rider-123",
+			"type": "string"
+		},
+		{
+			"key": "driverId",
+			"value": "driver-001",
+			"type": "string"
+		}
+	]
+}
